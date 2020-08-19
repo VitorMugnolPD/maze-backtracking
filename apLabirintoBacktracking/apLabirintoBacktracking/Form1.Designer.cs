@@ -30,13 +30,13 @@
         {
             this.btnEncontrarCaminhos = new System.Windows.Forms.Button();
             this.btnAbrirArquivo = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dgvCaminhos = new System.Windows.Forms.DataGridView();
+            this.dgvLabirinto = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dlgAbrir = new System.Windows.Forms.OpenFileDialog();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCaminhos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLabirinto)).BeginInit();
             this.SuspendLayout();
             // 
             // btnEncontrarCaminhos
@@ -57,21 +57,21 @@
             this.btnAbrirArquivo.Text = "Abrir arquivo";
             this.btnAbrirArquivo.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // dgvCaminhos
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(406, 85);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(472, 353);
-            this.dataGridView1.TabIndex = 2;
+            this.dgvCaminhos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCaminhos.Location = new System.Drawing.Point(406, 85);
+            this.dgvCaminhos.Name = "dgvCaminhos";
+            this.dgvCaminhos.Size = new System.Drawing.Size(472, 353);
+            this.dgvCaminhos.TabIndex = 2;
             // 
-            // dataGridView2
+            // dgvLabirinto
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(12, 85);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(388, 353);
-            this.dataGridView2.TabIndex = 3;
+            this.dgvLabirinto.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvLabirinto.Location = new System.Drawing.Point(12, 85);
+            this.dgvLabirinto.Name = "dgvLabirinto";
+            this.dgvLabirinto.Size = new System.Drawing.Size(388, 353);
+            this.dgvLabirinto.TabIndex = 3;
             // 
             // label1
             // 
@@ -93,6 +93,7 @@
             // 
             // dlgAbrir
             // 
+            this.dlgAbrir.DefaultExt = "txt";
             this.dlgAbrir.FileName = "openFileDialog1";
             // 
             // Form1
@@ -102,14 +103,14 @@
             this.ClientSize = new System.Drawing.Size(890, 450);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.dataGridView2);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dgvLabirinto);
+            this.Controls.Add(this.dgvCaminhos);
             this.Controls.Add(this.btnAbrirArquivo);
             this.Controls.Add(this.btnEncontrarCaminhos);
             this.Name = "Form1";
             this.Text = "Caminhos em Labirinto";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCaminhos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLabirinto)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -119,8 +120,8 @@
 
         private System.Windows.Forms.Button btnEncontrarCaminhos;
         private System.Windows.Forms.Button btnAbrirArquivo;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridView dgvCaminhos;
+        private System.Windows.Forms.DataGridView dgvLabirinto;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.OpenFileDialog dlgAbrir;
