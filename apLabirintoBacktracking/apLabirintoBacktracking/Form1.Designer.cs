@@ -56,6 +56,7 @@
             this.btnAbrirArquivo.TabIndex = 1;
             this.btnAbrirArquivo.Text = "Abrir arquivo";
             this.btnAbrirArquivo.UseVisualStyleBackColor = true;
+            this.btnAbrirArquivo.Click += new System.EventHandler(this.btnAbrirArquivo_Click);
             // 
             // dgvCaminhos
             // 
