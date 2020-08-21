@@ -7,6 +7,8 @@ namespace back_track
     {
         private int colunas, linhas;
         private char[,] matriz;
+        private PilhaLista<Position> caminho = new PilhaLista<Position>();
+        Position posicao = new Position(1, 1);
 
         public Maze(string arquivo)
         {
@@ -28,94 +30,81 @@ namespace back_track
 
         public void Find()
         {
-            Position posicao = new Position(1, 1);
-            int[] posi = posicao.getPosition();
             
-            for(int i = 0; i < 8; i++)
+            int[] posi = posicao.getPosition();
+            // WriteLine(posi[0] + " | " + posi[1]);
+            int[] walk_direction = new int[] {0, 0};
+
+            for(int i = 0; i < 9; i++)
             {
                 switch (i)
                 {
                     // Cima
                     case 0:
-                        if(matriz[posi[0], posi[1]-1] == '#')
-                        {
-                            WriteLine("aqui");
-                            break;
-                        }
-                        posicao.Walk(i);
+                        walk_direction = new int[] {0, -1};
                         break;
 
                     // Cima direita
                     case 1:
-                        if(matriz[posi[0]+1, posi[1]-1] == '#')
-                        {
-                            WriteLine("aqui");
-                            break;
-                        }
-                        posicao.Walk(i);
+                        walk_direction = new int[] {1, -1};
                         break;
 
                     // direita
                     case 2:
-                        if(matriz[posi[0]+1, posi[1]] == '#')
-                        {
-                            WriteLine("aqui");
-                            break;
-                        }
-                        posicao.Walk(i);
+                        walk_direction = new int[] {1, 0};
                         break;
                         
                     // direita baixo
                     case 3:
-                        if(matriz[posi[0]+1, posi[1]+1] == '#')
-                        {
-                            WriteLine("aqui");
-                            break;
-                        }
-                        posicao.Walk(i);
+                        walk_direction = new int[] {1, 1};
                         break;
 
                     // baixo
                     case 4:
-                        if(matriz[posi[0]+0, posi[1]+1] == '#')
-                        {
-                            WriteLine("aqui");
-                            break;
-                        }
-                        posicao.Walk(i);
+                        walk_direction = new int[] {0, 1};
                         break;
 
                     // baixo esquerda
                     case 5:
-                        if(matriz[posi[0]-1, posi[1]+1] == '#')
-                        {
-                            WriteLine("aqui");
-                            break;
-                        }
-                        posicao.Walk(i);
+                        walk_direction = new int[] {-1, 1};
                         break;
 
                     // esquerda
                     case 6:
-                        if(matriz[posi[0]-1, posi[1]] == '#')
-                        {
-                            WriteLine("aqui");
-                            break;
-                        }
-                        posicao.Walk(i);
+                        walk_direction = new int[] {-1, 0};
                         break;
 
                     // erqueda cima
                     case 7:
-                        if(matriz[posi[0]-1, posi[1]-1] == '#')
-                        {
-                            WriteLine("aqui");
-                            break;
-                        }
-                        posicao.Walk(i);
+                        walk_direction = new int[] {-1, -1};                        
+                        break;
+
+                    case 8:
+                        matriz[posi[1], posi[0]] = '#';
+                        caminho.Desempilhar();
+                        posicao = caminho.OTopo();
+                        //WriteLine(caminho.OTopo().toString());
                         break;
                 }
+
+                int[] new_position = new int[] {posi[0] + walk_direction[0], posi[1] + walk_direction[1]};
+                //WriteLine(new_position[0] + " # " + new_position[1] + " | " + matriz[new_position[1], new_position[0]] );
+                if(!(matriz[new_position[1], new_position[0]] == '#'))
+                {
+                    posicao.setDirection(i);
+                    caminho.Empilhar(posicao.Clone());
+                    matriz[posi[1], posi[0]] = '#';
+                    posicao.Walk(walk_direction[0], walk_direction[1]);
+                    break;
+                }
             }
+
+            posi = posicao.getPosition();
+            matriz[posi[1], posi[0]] = '*';
+            toString();
+            ReadLine();
+            Clear();
+            Find();
         }
 
         public char[,] getMaze()
@@ -131,6 +120,18 @@ namespace back_track
         public int getRows()
         {
             return this.linhas;
+        }
+
+        public void toString()
+        {
+            for (int i = 0; i < linhas; i++)
+            {
+                for (int j = 0; j < colunas; j++)
+                {
+                    Write(matriz[i, j]);
+                }
+                WriteLine("");
+            }
         }
     }
 }

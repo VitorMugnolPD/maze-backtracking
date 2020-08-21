@@ -1,6 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace back_track
 {
-    public class Position
+    public class Position : IComparable<Position>
     {
         private int x, y, direction;
 
@@ -10,61 +16,15 @@ namespace back_track
             this.y = y;
         }
 
-        public void Walk(int direction)
-        {
-            this.direction = direction;
-
-            switch (direction)
-            {
-                // Cima
-                case 0:
-                    Walk(0, -1);
-                    break;
-
-                // Cima direita
-                case 1:
-                    Walk(1, -1);
-                    break;
-
-                // direita
-                case 2:
-                    Walk(1, 0);
-                    break;
-                    
-                // direita baixo
-                case 3:
-                    Walk(1, 1);
-                    break;
-
-                // baixo
-                case 4:
-                    Walk(0, 1);
-                    break;
-
-                // baixo esquerda
-                case 5:
-                    Walk(-1, 1);
-                    break;
-
-                // esquerda
-                case 6:
-                    Walk(-1, 0);
-                    break;
-
-                // erqueda cima
-                case 7:
-                    Walk(-1, -1);
-                    break;
-
-
-
-            }
-        }
-
-        private void Walk(int x, int y)
+        public void Walk(int x, int y)
         {
             this.x += x;
             this.y += y;
+        }
+
+        public void setDirection(int direction)
+        {
+            this.direction = direction;
         }
 
         public int[] getPosition()
@@ -75,7 +35,25 @@ namespace back_track
 
         public string toString()
         {
-            return $"X: {this.x} | Y: {this.y}";
+            return $"X: {this.x} | Y: {this.y} | Direction: {this.direction}";
+        }
+
+        public int CompareTo(Position other)
+        {
+            return 0;
+        }
+
+        public Position Clone()
+        {
+            return Clone(this);
+        }
+
+        public Position Clone(Position object_to_clone)
+        {
+            Position clone = new Position(this.x, this.y);
+            clone.direction = this.direction;
+
+            return clone;
         }
     }
 }
