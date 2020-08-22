@@ -44,34 +44,34 @@ namespace back_track
                         walk_direction = new int[] {0, -1};
                         break;
 
-                    // Cima direita
-                    case 1:
-                        walk_direction = new int[] {1, -1};
-                        break;
-
                     // direita
-                    case 2:
+                    case 1:
                         walk_direction = new int[] {1, 0};
-                        break;
-                        
-                    // direita baixo
-                    case 3:
-                        walk_direction = new int[] {1, 1};
                         break;
 
                     // baixo
-                    case 4:
+                    case 2:
                         walk_direction = new int[] {0, 1};
                         break;
 
-                    // baixo esquerda
-                    case 5:
-                        walk_direction = new int[] {-1, 1};
+                    // esquerda
+                    case 3:
+                        walk_direction = new int[] {-1, 0};
                         break;
 
-                    // esquerda
+                    // Cima direita
+                    case 4:
+                        walk_direction = new int[] {1, -1};
+                        break;
+
+                    // direita baixo
+                    case 5:
+                        walk_direction = new int[] {1, 1};
+                        break;
+
+                    // baixo esquerda
                     case 6:
-                        walk_direction = new int[] {-1, 0};
+                        walk_direction = new int[] {-1, 1};
                         break;
 
                     // erqueda cima
@@ -100,6 +100,12 @@ namespace back_track
             }
 
             posi = posicao.getPosition();
+
+            if(matriz[posi[1], posi[0]] == 'S')
+            {
+                WriteLine("Achou");
+            }
+
             matriz[posi[1], posi[0]] = '*';
             toString();
             ReadLine();
