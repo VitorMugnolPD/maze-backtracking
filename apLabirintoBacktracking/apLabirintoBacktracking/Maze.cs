@@ -1,5 +1,8 @@
 using System.IO;
 using static System.Console;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Threading;
 
 namespace back_track
 {
@@ -9,6 +12,7 @@ namespace back_track
         private char[,] matriz;
         private PilhaLista<Position> caminho = new PilhaLista<Position>();
         Position posicao = new Position(1, 1);
+        //ListaSimples<PilhaLista<Position>> lista = new ListaSimples<PilhaLista<Position>>();
 
         public Maze(string arquivo)
         {
@@ -28,7 +32,7 @@ namespace back_track
             }
         }
 
-        public void Find()
+        public void Find(DataGridView dgv)
         {
             
             int[] posi = posicao.getPosition();
@@ -83,6 +87,8 @@ namespace back_track
                         matriz[posi[1], posi[0]] = '#';
                         caminho.Desempilhar();
                         posicao = caminho.OTopo();
+                        posi = posicao.getPosition();
+                        dgv[posi[0], posi[1]].Style.BackColor = Color.White;
                         //WriteLine(caminho.OTopo().toString());
                         break;
                 }
@@ -95,6 +101,10 @@ namespace back_track
                     caminho.Empilhar(posicao.Clone());
                     matriz[posi[1], posi[0]] = '#';
                     posicao.Walk(walk_direction[0], walk_direction[1]);
+                    dgv[posi[0], posi[1]].Style.BackColor = Color.Red;
+                    dgv.CurrentCell = dgv[posi[0], posi[1]];
+                    dgv.CurrentCell.Selected = true;
+                    dgv.BeginEdit(true);
                     break;
                 }
             }
@@ -103,14 +113,18 @@ namespace back_track
 
             if(matriz[posi[1], posi[0]] == 'S')
             {
-                WriteLine("Achou");
+                //WriteLine("Achou");
+                MessageBox.Show("achou");
+                return;
             }
 
-            matriz[posi[1], posi[0]] = '*';
-            toString();
-            ReadLine();
-            Clear();
-            Find();
+            //matriz[posi[1], posi[0]] = '*';
+            // toString();
+            // ReadLine();
+            //Clear();
+            dgv.Refresh();
+            Thread.Sleep(20);
+            Find(dgv);
         }
 
         public char[,] getMaze()

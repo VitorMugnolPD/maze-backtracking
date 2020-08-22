@@ -43,24 +43,29 @@ namespace back_track
 
     public int Tamanho { get => base.QuantosNos; }
 
+        public int CompareTo(PilhaLista<Dado> other)
+        {
+            return 0;
+        }
 
-    // public void Exibir(DataGridView dgv)
-    // {
-    //     for (int j = 0; j < 20; j++)
-    //         dgv[j, 0].Value = "";
 
-    //     var auxiliar = new PilhaLista<Dado>();
-    //     int i = 0;
-    //     while (!this.EstaVazia)
-    //     {
-    //         dgv[i++, 0].Value = this.OTopo();
-    //         Thread.Sleep(300);
-    //         Application.DoEvents();
-    //         auxiliar.Empilhar(this.Desempilhar());
-    //     }
+        // public void Exibir(DataGridView dgv)
+        // {
+        //     for (int j = 0; j < 20; j++)
+        //         dgv[j, 0].Value = "";
 
-    //     while (!auxiliar.EstaVazia)
-    //         this.Empilhar(auxiliar.Desempilhar());
-    // }
-  }
+        //     var auxiliar = new PilhaLista<Dado>();
+        //     int i = 0;
+        //     while (!this.EstaVazia)
+        //     {
+        //         dgv[i++, 0].Value = this.OTopo();
+        //         Thread.Sleep(300);
+        //         Application.DoEvents();
+        //         auxiliar.Empilhar(this.Desempilhar());
+        //     }
+
+        //     while (!auxiliar.EstaVazia)
+        //         this.Empilhar(auxiliar.Desempilhar());
+        // }
+    }
 }

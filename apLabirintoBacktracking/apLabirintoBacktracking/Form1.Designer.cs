@@ -47,6 +47,7 @@
             this.btnEncontrarCaminhos.TabIndex = 0;
             this.btnEncontrarCaminhos.Text = "Encontrar caminhos";
             this.btnEncontrarCaminhos.UseVisualStyleBackColor = true;
+            this.btnEncontrarCaminhos.Click += new System.EventHandler(this.btnEncontrarCaminhos_Click);
             // 
             // btnAbrirArquivo
             // 
@@ -68,9 +69,11 @@
             // 
             // dgvLabirinto
             // 
+            this.dgvLabirinto.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
             this.dgvLabirinto.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvLabirinto.Location = new System.Drawing.Point(12, 85);
             this.dgvLabirinto.Name = "dgvLabirinto";
+            this.dgvLabirinto.RowHeadersWidth = 12;
             this.dgvLabirinto.Size = new System.Drawing.Size(388, 353);
             this.dgvLabirinto.TabIndex = 3;
             // 
