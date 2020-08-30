@@ -42,6 +42,7 @@ namespace apLabirintoBacktracking
                 for (int n = 0; n < colunas-1; n++)
                 {
                     dgvLabirinto[n, i].Value = labirintoMatriz[i, n].ToString();
+                    dgvLabirinto[n, i].Style.BackColor = Color.White;
                 }
             }
         }
