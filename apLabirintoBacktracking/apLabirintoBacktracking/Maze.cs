@@ -36,7 +36,6 @@ namespace back_track
         {
             
             int[] posi = posicao.getPosition();
-            // WriteLine(posi[0] + " | " + posi[1]);
             int[] walk_direction = new int[] {0, 0};
 
             for(int i = 0; i < 9; i++)
@@ -85,16 +84,14 @@ namespace back_track
 
                     case 8:
                         matriz[posi[1], posi[0]] = '#';
-                        caminho.Desempilhar();
-                        posicao = caminho.OTopo();
+                        posicao = caminho.Desempilhar();
                         posi = posicao.getPosition();
                         dgv[posi[0], posi[1]].Style.BackColor = Color.White;
-                        //WriteLine(caminho.OTopo().toString());
                         break;
                 }
 
                 int[] new_position = new int[] {posi[0] + walk_direction[0], posi[1] + walk_direction[1]};
-                //WriteLine(new_position[0] + " # " + new_position[1] + " | " + matriz[new_position[1], new_position[0]] );
+
                 if(!(matriz[new_position[1], new_position[0]] == '#'))
                 {
                     posicao.setDirection(i);
@@ -110,20 +107,16 @@ namespace back_track
             }
 
             posi = posicao.getPosition();
-
-            if(matriz[posi[1], posi[0]] == 'S')
+            dgv.Refresh();
+            if (matriz[posi[1], posi[0]] == 'S')
             {
                 //WriteLine("Achou");
                 MessageBox.Show("achou");
                 return;
             }
 
-            //matriz[posi[1], posi[0]] = '*';
-            // toString();
-            // ReadLine();
-            //Clear();
-            dgv.Refresh();
-            Thread.Sleep(20);
+
+            Thread.Sleep(30);
             Find(dgv);
         }
 
