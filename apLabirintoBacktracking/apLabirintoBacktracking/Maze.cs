@@ -41,8 +41,9 @@ namespace back_track
 
             int[] posi = posicao.getPosition();
             int[] walk_direction = new int[] {0, 0};
+            bool voltou_do_S = false;
 
-            for(int i = 0; i < 9; i++)
+            for (int i = 0; i < 9; i++)
             {
                 switch (i)
                 {
@@ -91,45 +92,54 @@ namespace back_track
                         posicao = caminho.Desempilhar();
                         posi = posicao.getPosition();
                         dgvLabirinto[posi[0], posi[1]].Style.BackColor = Color.White;
-                        //dgvCaminho[parteCaminho, caminhosEncontrados].Value = "Voltou para (" + posi[1] + ", " + posi[0] + ")";
-                        //dgvCaminho.CurrentCell = dgvCaminho[parteCaminho, caminhosEncontrados];
-                        //dgvCaminho.CurrentCell.Selected = true;
-                        //dgvCaminho.BeginEdit(true);
                         break;
                 }
 
                 int[] new_position = new int[] {posi[0] + walk_direction[0], posi[1] + walk_direction[1]};
 
-                if(!(matriz[new_position[1], new_position[0]] == '#'))
+
+                // verifica se a posição é caminho
+                if(matriz[new_position[1], new_position[0]] == ' ')
                 {
                     posicao.setDirection(i);
                     caminho.Empilhar(posicao.Clone());
                     matriz[posi[1], posi[0]] = '#';
                     posicao.Walk(walk_direction[0], walk_direction[1]);
+
+                    // Mostra no dgv
                     dgvLabirinto[posi[0], posi[1]].Style.BackColor = Color.Red;
                     dgvLabirinto.CurrentCell = dgvLabirinto[posi[0], posi[1]];
                     dgvLabirinto.CurrentCell.Selected = true;
                     dgvLabirinto.BeginEdit(true);
-                    //dgvCaminho[parteCaminho, caminhosEncontrados].Value = "Foi para (" + posi[1] + ", " + posi[0] + ")";
-                    //dgvCaminho.CurrentCell = dgvCaminho[parteCaminho, caminhosEncontrados];
-                    //dgvCaminho.CurrentCell.Selected = true;
-                    //dgvCaminho.BeginEdit(true);
                     break;
+                }
+
+                // verifica se a posição é o final
+                if (matriz[new_position[1], new_position[0]] == 'S' && !voltou_do_S)
+                {
+                    voltou_do_S = true;
+
+                    matriz[posi[1], posi[0]] = '#';
+                    
+                    // Mostra no dgv
+                    dgvLabirinto[posi[0], posi[1]].Style.BackColor = Color.Red;
+                    dgvLabirinto.CurrentCell = dgvLabirinto[posi[0], posi[1]];
+                    dgvLabirinto.CurrentCell.Selected = true;
+                    dgvLabirinto.BeginEdit(true);
+
+                    // entra no S, só para registrar na pilha
+                    posicao.setDirection(i);
+                    caminho.Empilhar(posicao.Clone());
+                    posicao.Walk(walk_direction[0], walk_direction[1]);
+                    posicao = caminho.Desempilhar();
+
+                    caminhosEncontrados++;
+                    caminhos.Add(caminho);
+                    MessageBox.Show("Achou.");
                 }
             }
 
-            posi = posicao.getPosition();
             dgvLabirinto.Refresh();
-            if (matriz[posi[1], posi[0]] == 'S')
-            {
-                //dgvCaminho.Refresh();
-                caminhosEncontrados++;
-                parteCaminho = 0;
-                caminhos.Add(caminho);
-                MessageBox.Show("Achou.");
-                //return;
-            }
-            parteCaminho++;
 
             if(caminho.EstaVazia)
             {
