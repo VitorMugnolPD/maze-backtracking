@@ -134,7 +134,8 @@ namespace back_track
                     posicao = caminho.Desempilhar();
 
                     caminhosEncontrados++;
-                    caminhos.Add(caminho);
+                    PilhaLista<Position> caminhoClone = (PilhaLista<Position>) caminho.Clone();
+                    caminhos.Add(caminhoClone);
                     MessageBox.Show("Achou.");
                 }
             }
@@ -182,23 +183,20 @@ namespace back_track
 
         public void mostrarCaminhos(DataGridView dgvCaminho)
         {
-            dgvCaminho.RowCount = 10;
+            //dgvCaminho.RowCount = 10;
             dgvCaminho.ColumnCount = 300;
-            int c = 0;
-            int pa = 0;
+            string[] caminhosEncontrados;
             foreach (PilhaLista<Position> caminho in caminhos)
             {
-                int t = caminho.Tamanho;
-                do
+                caminhosEncontrados = new string[caminho.Tamanho];
+                int cont = 0;
+                while (!caminho.EstaVazia)
                 {
-                    if (caminho.EstaVazia)
-                        break;
                     Position p = caminho.Desempilhar();
-                    dgvCaminho[t - pa, c].Value = "Foi para " + p.getPosition()[0] + ", " + p.getPosition()[1] + ")";
-                    pa++;
+                    caminhosEncontrados[cont] = "Foi para (" + p.getPosition()[0] + ", " + p.getPosition()[1] + ")";
+                    cont++;
                 }
-                while (!caminho.EstaVazia);
-                c++;
+                dgvCaminho.Rows.Add(caminhosEncontrados);
             }
             dgvCaminho.Refresh();
             MessageBox.Show("Caminhos listados.");
