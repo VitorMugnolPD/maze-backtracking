@@ -49,7 +49,7 @@ namespace apLabirintoBacktracking
 
         private void btnEncontrarCaminhos_Click(object sender, EventArgs e)
         {
-            labirinto.Find(dgvLabirinto);
+            labirinto.Find(dgvLabirinto, dgvCaminhos);
         }
     }
 }

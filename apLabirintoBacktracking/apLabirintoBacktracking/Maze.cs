@@ -3,14 +3,18 @@ using static System.Console;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace back_track
 {
     public class Maze
     {
+        private int parteCaminho = 0;
+        private int caminhosEncontrados = 0;
         private int colunas, linhas;
         private char[,] matriz;
         private PilhaLista<Position> caminho = new PilhaLista<Position>();
+        private List<PilhaLista<Position>> caminhos = new List<PilhaLista<Position>>();
         Position posicao = new Position(1, 1);
         //ListaSimples<PilhaLista<Position>> lista = new ListaSimples<PilhaLista<Position>>();
 
@@ -32,9 +36,9 @@ namespace back_track
             }
         }
 
-        public void Find(DataGridView dgv)
+        public void Find(DataGridView dgvLabirinto, DataGridView dgvCaminho)
         {
-            
+
             int[] posi = posicao.getPosition();
             int[] walk_direction = new int[] {0, 0};
 
@@ -86,7 +90,11 @@ namespace back_track
                         matriz[posi[1], posi[0]] = '#';
                         posicao = caminho.Desempilhar();
                         posi = posicao.getPosition();
-                        dgv[posi[0], posi[1]].Style.BackColor = Color.White;
+                        dgvLabirinto[posi[0], posi[1]].Style.BackColor = Color.White;
+                        //dgvCaminho[parteCaminho, caminhosEncontrados].Value = "Voltou para (" + posi[1] + ", " + posi[0] + ")";
+                        //dgvCaminho.CurrentCell = dgvCaminho[parteCaminho, caminhosEncontrados];
+                        //dgvCaminho.CurrentCell.Selected = true;
+                        //dgvCaminho.BeginEdit(true);
                         break;
                 }
 
@@ -98,26 +106,41 @@ namespace back_track
                     caminho.Empilhar(posicao.Clone());
                     matriz[posi[1], posi[0]] = '#';
                     posicao.Walk(walk_direction[0], walk_direction[1]);
-                    dgv[posi[0], posi[1]].Style.BackColor = Color.Red;
-                    dgv.CurrentCell = dgv[posi[0], posi[1]];
-                    dgv.CurrentCell.Selected = true;
-                    dgv.BeginEdit(true);
+                    dgvLabirinto[posi[0], posi[1]].Style.BackColor = Color.Red;
+                    dgvLabirinto.CurrentCell = dgvLabirinto[posi[0], posi[1]];
+                    dgvLabirinto.CurrentCell.Selected = true;
+                    dgvLabirinto.BeginEdit(true);
+                    //dgvCaminho[parteCaminho, caminhosEncontrados].Value = "Foi para (" + posi[1] + ", " + posi[0] + ")";
+                    //dgvCaminho.CurrentCell = dgvCaminho[parteCaminho, caminhosEncontrados];
+                    //dgvCaminho.CurrentCell.Selected = true;
+                    //dgvCaminho.BeginEdit(true);
                     break;
                 }
             }
 
             posi = posicao.getPosition();
-            dgv.Refresh();
+            dgvLabirinto.Refresh();
             if (matriz[posi[1], posi[0]] == 'S')
             {
-                //WriteLine("Achou");
-                MessageBox.Show("achou");
+                //dgvCaminho.Refresh();
+                caminhosEncontrados++;
+                parteCaminho = 0;
+                caminhos.Add(caminho);
+                MessageBox.Show("Achou.");
+                //return;
+            }
+            parteCaminho++;
+
+            if(caminho.EstaVazia)
+            {
+                MessageBox.Show("Não possui mais caminhos.");
+                mostrarCaminhos(dgvCaminho);
                 return;
             }
 
 
             Thread.Sleep(30);
-            Find(dgv);
+            Find(dgvLabirinto, dgvCaminho);
         }
 
         public char[,] getMaze()
@@ -145,6 +168,30 @@ namespace back_track
                 }
                 WriteLine("");
             }
+        }
+
+        public void mostrarCaminhos(DataGridView dgvCaminho)
+        {
+            dgvCaminho.RowCount = 10;
+            dgvCaminho.ColumnCount = 300;
+            int c = 0;
+            int pa = 0;
+            foreach (PilhaLista<Position> caminho in caminhos)
+            {
+                int t = caminho.Tamanho;
+                do
+                {
+                    if (caminho.EstaVazia)
+                        break;
+                    Position p = caminho.Desempilhar();
+                    dgvCaminho[t - pa, c].Value = "Foi para " + p.getPosition()[0] + ", " + p.getPosition()[1] + ")";
+                    pa++;
+                }
+                while (!caminho.EstaVazia);
+                c++;
+            }
+            dgvCaminho.Refresh();
+            MessageBox.Show("Caminhos listados.");
         }
     }
 }
