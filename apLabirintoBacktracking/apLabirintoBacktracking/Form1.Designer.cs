@@ -66,6 +66,7 @@
             this.dgvCaminhos.Name = "dgvCaminhos";
             this.dgvCaminhos.Size = new System.Drawing.Size(472, 353);
             this.dgvCaminhos.TabIndex = 2;
+            this.dgvCaminhos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCaminhos_CellContentClick);
             // 
             // dgvLabirinto
             // 

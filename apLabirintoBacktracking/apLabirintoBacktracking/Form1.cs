@@ -51,5 +51,12 @@ namespace apLabirintoBacktracking
         {
             labirinto.Find(dgvLabirinto, dgvCaminhos);
         }
+
+        private void dgvCaminhos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int caminhoIndice = dgvCaminhos.CurrentCell.RowIndex;
+            //MessageBox.Show(caminhoIndice + "");
+            labirinto.destacarCaminho(caminhoIndice, dgvLabirinto);
+        }
     }
 }

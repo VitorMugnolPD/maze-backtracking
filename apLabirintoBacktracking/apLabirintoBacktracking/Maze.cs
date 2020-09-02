@@ -160,11 +160,12 @@ namespace back_track
             string[] caminhosEncontrados;
             foreach (PilhaLista<Position> caminho in caminhos)
             {
-                caminhosEncontrados = new string[caminho.Tamanho];
+                PilhaLista<Position> caminhoClone = (PilhaLista<Position>) caminho.Clone();
+                caminhosEncontrados = new string[caminhoClone.Tamanho];
                 int cont = 0;
-                while (!caminho.EstaVazia)
+                while (!caminhoClone.EstaVazia)
                 {
-                    Position p = caminho.Desempilhar();
+                    Position p = caminhoClone.Desempilhar();
                     caminhosEncontrados[cont] = "Foi para (" + p.getPosition()[0] + ", " + p.getPosition()[1] + ")";
                     cont++;
                 }
@@ -172,6 +173,17 @@ namespace back_track
             }
             dgvCaminho.Refresh();
             MessageBox.Show("Caminhos listados.");
+        }
+
+        public void destacarCaminho (int caminhoIndice, DataGridView dgvLabirinto)
+        {
+            PilhaLista<Position> caminho = (PilhaLista<Position>) caminhos[caminhoIndice].Clone();
+            while(!caminho.EstaVazia)
+            {
+                Position p = caminho.Desempilhar().Clone();
+                int[] coordenadas = p.getPosition();
+                dgvLabirinto[coordenadas[0], coordenadas[1]].Style.BackColor = Color.Green;
+            }
         }
     }
 }

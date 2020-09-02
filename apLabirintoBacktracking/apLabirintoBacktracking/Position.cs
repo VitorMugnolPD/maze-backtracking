@@ -46,6 +46,11 @@ namespace back_track
             this.direction = direction;
         }
 
+        public int getDirection()
+        {
+            return this.direction;
+        }
+
         public int[] getPosition()
         { 
             int[] a = new int[] {x, y};
