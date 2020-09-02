@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Threading;
 using System.Collections.Generic;
+using System.Security;
 
 namespace back_track
 {
@@ -18,7 +19,7 @@ namespace back_track
         private static Position Posicaocao_atual = new Position(1, 1);
         private int[] CordenadasDaPosicao = Posicaocao_atual.getPosition();
         private Dictionary<int, int[]> directions = Posicaocao_atual.getDicionarioDePosicoes();
-        private bool voltou_do_S;
+        private int last_direction = 0;
 
 
 
@@ -50,23 +51,24 @@ namespace back_track
 
         public void Back_Way()
         {
-            matriz[CordenadasDaPosicao[1], CordenadasDaPosicao[0]] = '#';
+            matriz[CordenadasDaPosicao[1], CordenadasDaPosicao[0]] = ' ';
+            last_direction = Posicaocao_atual.getDirection() + 1;
             Posicaocao_atual = caminho.Desempilhar();
-            voltou_do_S = false;
-    }
+        }
 
         public void Progress(int direction)
         {
             caminho.Empilhar(Posicaocao_atual.Clone());
             matriz[CordenadasDaPosicao[1], CordenadasDaPosicao[0]] = '#';
             Posicaocao_atual.Walk(direction);
+            last_direction = 0;
         }
 
         public void Find(DataGridView dgvLabirinto, DataGridView dgvCaminho)
         {
             CordenadasDaPosicao = Posicaocao_atual.getPosition();
 
-            for (int i = 0; i < 9; i++)
+            for (int i = last_direction; i < 9; i++)
             {
                 // Voltar no caminho
                 if (i > 7)
@@ -93,20 +95,18 @@ namespace back_track
                 }
 
                 // verifica se a CordenadasDaPosicaoção é o final
-                if (matriz[CordenadasDaPosicaocao_teste[1], CordenadasDaPosicaocao_teste[0]] == 'S' && !voltou_do_S)
+                if (matriz[CordenadasDaPosicaocao_teste[1], CordenadasDaPosicaocao_teste[0]] == 'S')
                 {
-                    voltou_do_S = true;
-
-                    //Progress(i);
                     caminho.Empilhar(Posicaocao_atual.Clone());
+                    last_direction = i + 1;
 
                     // Mostra no dgv
+                    Update_DataGridView_Position(dgvLabirinto);
                     dgvLabirinto[CordenadasDaPosicao[0], CordenadasDaPosicao[1]].Style.BackColor = Color.Red;
-                    Update_DataGridView_Position(dgvLabirinto);                  
 
                     caminhosEncontrados++;
                     caminhos.Add((PilhaLista<Position>)caminho.Clone());
-                    MessageBox.Show("Achou.");
+                    //MessageBox.Show("Achou.");
                     caminho.Desempilhar();
                     break;
                 }
@@ -116,7 +116,7 @@ namespace back_track
 
             if (caminho.EstaVazia)
             {
-                MessageBox.Show("Não possui mais caminhos.");
+                MessageBox.Show("Caminhos encontrados: " + caminhosEncontrados);
                 mostrarCaminhos(dgvCaminho);
                 return;
             }
@@ -172,7 +172,7 @@ namespace back_track
                 dgvCaminho.Rows.Add(caminhosEncontrados);
             }
             dgvCaminho.Refresh();
-            MessageBox.Show("Caminhos listados.");
+            //MessageBox.Show("Caminhos listados.");
         }
 
         public void destacarCaminho (int caminhoIndice, DataGridView dgvLabirinto)

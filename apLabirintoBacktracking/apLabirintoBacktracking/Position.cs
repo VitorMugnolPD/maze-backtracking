@@ -17,7 +17,7 @@ namespace back_track
             this.x = x;
             this.y = y;
 
-            directions.Add(0    , new int[2] {0, -1 });
+            directions.Add(0    , new int[2] { 0, -1 });
             directions.Add(1    , new int[2] { 1, 0 });
             directions.Add(2    , new int[2] { 0, 1 });
             directions.Add(3    , new int[2] { -1, 0 });

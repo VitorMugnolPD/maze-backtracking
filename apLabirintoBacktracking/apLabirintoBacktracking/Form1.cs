@@ -55,7 +55,6 @@ namespace apLabirintoBacktracking
         private void dgvCaminhos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             int caminhoIndice = dgvCaminhos.CurrentCell.RowIndex;
-            //MessageBox.Show(caminhoIndice + "");
             labirinto.destacarCaminho(caminhoIndice, dgvLabirinto);
         }
     }
