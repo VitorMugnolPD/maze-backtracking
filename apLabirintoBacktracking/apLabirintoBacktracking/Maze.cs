@@ -38,7 +38,6 @@ namespace back_track
 
         public void Find(DataGridView dgvLabirinto, DataGridView dgvCaminho)
         {
-
             int[] posi = posicao.getPosition();
             int[] walk_direction = new int[] {0, 0};
             bool voltou_do_S = false;
@@ -131,10 +130,12 @@ namespace back_track
                     posicao.setDirection(i);
                     caminho.Empilhar(posicao.Clone());
                     posicao.Walk(walk_direction[0], walk_direction[1]);
-                    posicao = caminho.Desempilhar();
+                    caminho.Empilhar(posicao.Clone());
 
                     caminhosEncontrados++;
                     PilhaLista<Position> caminhoClone = (PilhaLista<Position>) caminho.Clone();
+                    posicao = caminho.Desempilhar();
+                    posicao = caminho.Desempilhar();
                     caminhos.Add(caminhoClone);
                     MessageBox.Show("Achou.");
                 }
