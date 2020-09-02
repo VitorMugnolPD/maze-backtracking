@@ -9,21 +9,25 @@ namespace back_track
 {
     public class Maze
     {
-        private int parteCaminho = 0;
         private int caminhosEncontrados = 0;
         private int colunas, linhas;
         private char[,] matriz;
+
         private PilhaLista<Position> caminho = new PilhaLista<Position>();
         private List<PilhaLista<Position>> caminhos = new List<PilhaLista<Position>>();
-        Position posicao = new Position(1, 1);
-        //ListaSimples<PilhaLista<Position>> lista = new ListaSimples<PilhaLista<Position>>();
+        private static Position Posicaocao_atual = new Position(1, 1);
+        private int[] CordenadasDaPosicao = Posicaocao_atual.getPosition();
+        private Dictionary<int, int[]> directions = Posicaocao_atual.getDicionarioDePosicoes();
+        private bool voltou_do_S;
+
+
 
         public Maze(string arquivo)
         {
             StreamReader sr = new StreamReader(arquivo);
             colunas = int.Parse(sr.ReadLine());
             linhas = int.Parse(sr.ReadLine());
-            
+
             matriz = new char[linhas, colunas];
 
             for (int i = 0; i < linhas; i++)
@@ -36,114 +40,81 @@ namespace back_track
             }
         }
 
+        public void Update_DataGridView_Position(DataGridView dgv)
+        {
+            int[] CordenadasDaPosicao = Posicaocao_atual.getPosition();
+            dgv.CurrentCell = dgv[CordenadasDaPosicao[0], CordenadasDaPosicao[1]];
+            dgv.CurrentCell.Selected = true;
+            dgv.BeginEdit(true);
+        }
+
+        public void Back_Way()
+        {
+            matriz[CordenadasDaPosicao[1], CordenadasDaPosicao[0]] = '#';
+            Posicaocao_atual = caminho.Desempilhar();
+            voltou_do_S = false;
+    }
+
+        public void Progress(int direction)
+        {
+            caminho.Empilhar(Posicaocao_atual.Clone());
+            matriz[CordenadasDaPosicao[1], CordenadasDaPosicao[0]] = '#';
+            Posicaocao_atual.Walk(direction);
+        }
+
         public void Find(DataGridView dgvLabirinto, DataGridView dgvCaminho)
         {
-            int[] posi = posicao.getPosition();
-            int[] walk_direction = new int[] {0, 0};
-            bool voltou_do_S = false;
+            CordenadasDaPosicao = Posicaocao_atual.getPosition();
 
             for (int i = 0; i < 9; i++)
             {
-                switch (i)
+                // Voltar no caminho
+                if (i > 7)
                 {
-                    // Cima
-                    case 0:
-                        walk_direction = new int[] {0, -1};
-                        break;
-
-                    // direita
-                    case 1:
-                        walk_direction = new int[] {1, 0};
-                        break;
-
-                    // baixo
-                    case 2:
-                        walk_direction = new int[] {0, 1};
-                        break;
-
-                    // esquerda
-                    case 3:
-                        walk_direction = new int[] {-1, 0};
-                        break;
-
-                    // Cima direita
-                    case 4:
-                        walk_direction = new int[] {1, -1};
-                        break;
-
-                    // direita baixo
-                    case 5:
-                        walk_direction = new int[] {1, 1};
-                        break;
-
-                    // baixo esquerda
-                    case 6:
-                        walk_direction = new int[] {-1, 1};
-                        break;
-
-                    // erqueda cima
-                    case 7:
-                        walk_direction = new int[] {-1, -1};                        
-                        break;
-
-                    case 8:
-                        matriz[posi[1], posi[0]] = '#';
-                        posicao = caminho.Desempilhar();
-                        posi = posicao.getPosition();
-                        dgvLabirinto[posi[0], posi[1]].Style.BackColor = Color.White;
-                        break;
+                    Back_Way();
+                    dgvLabirinto[CordenadasDaPosicao[0], CordenadasDaPosicao[1]].Style.BackColor = Color.White;
+                    Update_DataGridView_Position(dgvLabirinto);
+                    continue;
                 }
 
-                int[] new_position = new int[] {posi[0] + walk_direction[0], posi[1] + walk_direction[1]};
+                int[] CordenadasDaPosicaocao_teste = new int[] { CordenadasDaPosicao[0] + directions[i][0], CordenadasDaPosicao[1] + directions[i][1] };
 
-
-                // verifica se a posição é caminho
-                if(matriz[new_position[1], new_position[0]] == ' ')
+                // verifica se a CordenadasDaPosicaoção é caminho
+                if (matriz[CordenadasDaPosicaocao_teste[1], CordenadasDaPosicaocao_teste[0]] == ' ')
                 {
-                    posicao.setDirection(i);
-                    caminho.Empilhar(posicao.Clone());
-                    matriz[posi[1], posi[0]] = '#';
-                    posicao.Walk(walk_direction[0], walk_direction[1]);
+                    // Anda
+                    Progress(i);
 
                     // Mostra no dgv
-                    dgvLabirinto[posi[0], posi[1]].Style.BackColor = Color.Red;
-                    dgvLabirinto.CurrentCell = dgvLabirinto[posi[0], posi[1]];
-                    dgvLabirinto.CurrentCell.Selected = true;
-                    dgvLabirinto.BeginEdit(true);
+                    dgvLabirinto[CordenadasDaPosicao[0], CordenadasDaPosicao[1]].Style.BackColor = Color.Red;
+                    Update_DataGridView_Position(dgvLabirinto);
+
                     break;
                 }
 
-                // verifica se a posição é o final
-                if (matriz[new_position[1], new_position[0]] == 'S' && !voltou_do_S)
+                // verifica se a CordenadasDaPosicaoção é o final
+                if (matriz[CordenadasDaPosicaocao_teste[1], CordenadasDaPosicaocao_teste[0]] == 'S' && !voltou_do_S)
                 {
                     voltou_do_S = true;
 
-                    matriz[posi[1], posi[0]] = '#';
-                    
-                    // Mostra no dgv
-                    dgvLabirinto[posi[0], posi[1]].Style.BackColor = Color.Red;
-                    dgvLabirinto.CurrentCell = dgvLabirinto[posi[0], posi[1]];
-                    dgvLabirinto.CurrentCell.Selected = true;
-                    dgvLabirinto.BeginEdit(true);
+                    //Progress(i);
+                    caminho.Empilhar(Posicaocao_atual.Clone());
 
-                    // entra no S, só para registrar na pilha
-                    posicao.setDirection(i);
-                    caminho.Empilhar(posicao.Clone());
-                    posicao.Walk(walk_direction[0], walk_direction[1]);
-                    caminho.Empilhar(posicao.Clone());
+                    // Mostra no dgv
+                    dgvLabirinto[CordenadasDaPosicao[0], CordenadasDaPosicao[1]].Style.BackColor = Color.Red;
+                    Update_DataGridView_Position(dgvLabirinto);                  
 
                     caminhosEncontrados++;
-                    PilhaLista<Position> caminhoClone = (PilhaLista<Position>) caminho.Clone();
-                    posicao = caminho.Desempilhar();
-                    posicao = caminho.Desempilhar();
-                    caminhos.Add(caminhoClone);
+                    caminhos.Add((PilhaLista<Position>)caminho.Clone());
                     MessageBox.Show("Achou.");
+                    caminho.Desempilhar();
+                    break;
                 }
             }
 
             dgvLabirinto.Refresh();
 
-            if(caminho.EstaVazia)
+            if (caminho.EstaVazia)
             {
                 MessageBox.Show("Não possui mais caminhos.");
                 mostrarCaminhos(dgvCaminho);
