@@ -64,7 +64,21 @@ namespace back_track
             last_direction = 0;
         }
 
-        public void Find(DataGridView dgvLabirinto, DataGridView dgvCaminho)
+        public void Find(DataGridView dgvLabirinto)
+        {
+            do
+            {
+                Step(dgvLabirinto, dgvCaminho);
+                dgvLabirinto.Refresh();
+                Thread.Sleep(30);
+            }
+            while (!caminho.EstaVazia);
+
+            MessageBox.Show("Caminhos encontrados: " + caminhosEncontrados);
+            mostrarCaminhos(dgvCaminho);
+        }
+
+        public void Step(DataGridView dgvLabirinto)
         {
             CordenadasDaPosicao = Posicaocao_atual.getPosition();
 
@@ -111,19 +125,6 @@ namespace back_track
                     break;
                 }
             }
-
-            dgvLabirinto.Refresh();
-
-            if (caminho.EstaVazia)
-            {
-                MessageBox.Show("Caminhos encontrados: " + caminhosEncontrados);
-                mostrarCaminhos(dgvCaminho);
-                return;
-            }
-
-
-            Thread.Sleep(30);
-            Find(dgvLabirinto, dgvCaminho);
         }
 
         public char[,] getMaze()
