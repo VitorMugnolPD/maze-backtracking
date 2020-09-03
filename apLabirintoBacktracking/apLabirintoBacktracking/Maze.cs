@@ -64,7 +64,7 @@ namespace back_track
             last_direction = 0;
         }
 
-        public void Find(DataGridView dgvLabirinto)
+        public void Find(DataGridView dgvLabirinto, DataGridView dgvCaminho)
         {
             do
             {
