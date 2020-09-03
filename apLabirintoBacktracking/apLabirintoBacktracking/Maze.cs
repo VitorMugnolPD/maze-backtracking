@@ -66,6 +66,8 @@ namespace back_track
 
         public void Find(DataGridView dgvLabirinto, DataGridView dgvCaminho)
         {
+            Posicaocao_atual.setDirection(-1);
+            caminho.Empilhar(Posicaocao_atual.Clone());
             do
             {
                 Step(dgvLabirinto);
