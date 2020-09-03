@@ -68,7 +68,7 @@ namespace back_track
         {
             do
             {
-                Step(dgvLabirinto, dgvCaminho);
+                Step(dgvLabirinto);
                 dgvLabirinto.Refresh();
                 Thread.Sleep(30);
             }
